@@ -1,0 +1,117 @@
+{% extends 'Utils/index.html' %}
+{% load static %}
+
+{% block style %}
+<style>
+    #search {
+        margin: 10px 0px;
+        border-top-right-radius: 0%;
+        border-bottom-right-radius: 0%;
+    }
+
+    #search-btn {
+        margin: 10px 0px;
+        border-top-left-radius: 0%;
+        border-bottom-left-radius: 0%;
+    }
+
+    body {
+        background: -webkit-linear-gradient(to right, white, white);
+        background: linear-gradient(to right, white, white);
+    }
+
+    .tooltip {
+        position: relative;
+        display: inline-block;
+    }
+
+    .tooltip .tooltiptext {
+        visibility: hidden;
+        width: 140px;
+        background-color: #555;
+        color: #fff;
+        text-align: center;
+        border-radius: 6px;
+        padding: 5px;
+        position: absolute;
+        z-index: 1;
+        bottom: 150%;
+        left: 50%;
+        margin-left: -75px;
+        opacity: 0;
+        transition: opacity 0.3s;
+    }
+
+    .tooltip .tooltiptext::after {
+        content: "";
+        position: absolute;
+        top: 100%;
+        left: 50%;
+        margin-left: -5px;
+        border-width: 5px;
+        border-style: solid;
+        border-color: #555 transparent transparent transparent;
+    }
+
+    .tooltip:hover .tooltiptext {
+        visibility: visible;
+        opacity: 1;
+    }
+    .error{
+        display: block;
+        color: red;
+    }
+</style>
+{% endblock style %}
+
+{% block div %}
+<div class="container my-5 px-5 text-center">
+    <h2 class="alert alert-info">Language Translator</h2>
+    <form class="row" action="" method="POST" NOVALIDATE>
+        {% csrf_token %}
+        <div class="col-lg-5 text-center">
+            <div class="row">
+                <div class="col-lg-6 px-0 mb-2">
+                    <h2>{{ tf.textarea.label_tag }}</h2>
+                </div>
+            </div>
+            {{ tf.textarea }} <br> <span class="error"> {{ tf.textarea.errors | striptags}} </span>
+            <div style="text-align: left;">
+                <input class="btn btn-danger" type="reset" value="Clear">
+            </div>
+        </div>
+        <div style="margin-top: 200px;" class="col-lg-2 text-center">
+            <span>&#8652</span> <br>
+            <input class="form-control btn btn-primary" type="submit" value="TRANSLATE">
+        </div>
+        <div class="col-lg-5 text-center">
+            <div class="row">
+                <div class="col-lg-5">
+                    <label class="mt-2" for="output">Output</label>
+                </div>
+                <div class="col-lg-5 dropdown-header">
+                    {{ tf.language }}
+                </div>
+            </div>
+            <div>
+                {% if output %}
+                <textarea class="mr-5 mt-1 p-2 form-control" name="translate" id="myInput" cols="47"
+                rows="15">{{ output }}</textarea>
+                <div style="text-align: left;margin-left: 10px;" class="mt-4">
+                    <button class="btn btn-primary" id="copy" onclick="myFunction()" data-toggle="tooltip"
+                    data-placement="button" title="Copy to Clipboard">Copy</button>
+                </div>
+                {% else %}
+                <textarea class="mr-5 mt-1 p-2 form-control" name="translate" id="" cols="47"
+                rows="15">Output will be displayed here</textarea> <br>
+                <span class="error">{{ tf.language.errors | striptags}}</span>
+                {% endif %}
+            </div>
+        </div>
+    </form>
+</div>
+{% endblock div %}
+
+{% block script %}
+    <script src="{% static 'Utils/Js/copy.js' %}"></script>
+{% endblock script %}
