@@ -1,0 +1,61 @@
+{% extends 'Utils/index.html' %}
+
+{% block style %}
+<style>
+    #search {
+        margin: 10px 0px;
+        border-top-right-radius: 0%;
+        border-bottom-right-radius: 0%;
+    }
+
+    #search-btn {
+        margin: 10px 0px;
+        border-top-left-radius: 0%;
+        border-bottom-left-radius: 0%;
+    }
+
+    body {
+        background: -webkit-linear-gradient(to right, white, white);
+        background: linear-gradient(to right, white, white);
+    }
+
+    .error {
+        display: block;
+        margin: 20px;
+        color: red;
+    }
+</style>
+{% endblock style %}
+
+{% block div %}
+<div class="container">
+    <div class="m-5 row">
+        <div class="bg-light col-sm-8 border-right-0">
+            <h1 style="color: indigo;" class="alert font-weight-bold">Profanity Filter</h1>
+            <div class="p-4">
+                {% if output %}
+                <textarea class="form-control" name="text" id="text" cols="60" rows="10">{{ output }}</textarea>
+                {% else %}
+                <form action="" method="POST" NOVALIDATE>
+                    {% csrf_token %}
+                    {{ tf.textarea }} <br> <span class="error">{{ tf.textarea.errors | striptags }}</span>
+                    <input type='reset' value="Clear" class="btn btn-primary"></input>
+                    <input type='submit' value="Filter" class="btn btn-success"></input>
+                </form>
+                {% endif %}
+            </div>
+        </div>
+        <div class="col-sm-4 bg-light p-4 pt-4">
+            <h4 class="font-weight-bold">Profanity Filter</h4>
+            <hr>
+            <p style="line-height: 35px;font-weight:400" class="text-dark">Want to check quickly for swear words and
+                abuse? Our profanity filter will highlight possible swear words for you in nice bright pink. Please note
+                that we are on the side of the caution - a lot of the words we highlight are only profane in certain
+                circumstances.</p>
+            <p style="line-height: 35px;font-weight:400" class="text-dark">Paste your text in to the box on the left. We
+                will highlight any profanity we find and show you the percentage of your document that needs checking.
+            </p>
+        </div>
+    </div>
+</div>
+{% endblock div %}
