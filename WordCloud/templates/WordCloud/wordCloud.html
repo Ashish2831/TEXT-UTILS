@@ -1,0 +1,117 @@
+{% extends 'Utils/index.html' %}
+{% load static %}
+
+{% block style %}
+<style>
+    .upload {
+        font-size: 20px;
+        color: white;
+        padding: 5px;
+        font-family: sans-serif;
+        border-radius: 0.3rem;
+        cursor: pointer;
+        margin-top: 1rem;
+    }
+
+    .box {
+        height: 250px;
+        border: 2px solid silver;
+        cursor: pointer;
+    }
+
+    .box:hover {
+        border: 2px solid skyblue;
+    }
+
+    .error {
+        color: red;
+        margin-left: 10px;
+    }
+</style>
+{% endblock style %}
+
+{% block div %}
+<div class="container">
+    <h1 class="alert alert-primary m-5 text-center">Word Cloud</h1>
+    <div class="row">
+        <div class="col-sm-6 my-3 px-5">
+            <form action="{% url 'AddWords' %}" method="POST" NOVALIDATE>
+                {% csrf_token %}
+                <table>
+                    <div class="row">
+                        <div class="col-sm-12 col-md-8 col-lg-10">
+                            {{ wf.word }} <span class="error">{{ wf.word.errors | striptags }}</span>
+                        </div>
+                        <div class="col-sm-12 col-md-4 col-lg-2">
+                            <input class="btn btn-primary form-control" type="submit" value="Add">
+                        </div>
+                    </div>
+                </table>
+            </form>
+            <form action="{% url 'GenerateWords' %}" method="POST" NOVALIDATE>
+                {% csrf_token %}
+                <div class="form-group col-sm-12 my-4 p-2 box">
+                    {% if words %}
+                    {% for word in words %} {{ word }} <a href="{% url 'Delete_Word' forloop.counter0 %}"
+                        class="btn btn-light mb-1">x</a> {% endfor %}
+                    {% else %}
+                    <p>No Words</p>
+                    {% endif %}
+                </div>
+                {% if NoWords %}
+                <span class="error">Please Add Words!</span>
+                {% endif %}
+                <div class="row">
+                    <div class="col-md-8">
+                        <label class="upload bg-light text-dark text-right">{{ select.select }}</label>
+                    </div>
+                    <div class="col-md-4">
+                        <input class="btn btn-primary mt-4" type="submit" value="Generate Cloud">
+                    </div>
+                </div>
+            </form>
+        </div>
+        <form class="col-sm-6 my-3 px-5" action="{% url 'GenerateText' %}" method="POST" NOVALIDATE>
+            <div class="row">
+                <div class="col-sm-8">
+                    <label for="id_textarea">Source Text</label>
+                </div>
+                <div style="text-align: right;" class="col-sm-4">
+                    <label style="margin: 0px 0px 12px 0px;" class="upload bg-light text-dark">{{ select.select }}</label>
+                </div>
+            </div>
+            <div class="mt-2">
+                {% csrf_token %}
+                {{ wtform.textarea }} <span class="error d-inline-block mt-2">{{ wtform.textarea.errors | striptags }}</span>
+                <div class="mt-4">
+                    <input class="btn btn-danger mt-4" type="reset" value="Clear">
+                    <input style="text-align: right;" class="btn btn-primary mt-4" type="submit" value="Generate Cloud">
+                </div>
+        </form>
+    </div>
+    <div class="mt-5">
+        <form class="col-sm-6 my-3 px-5" action="{% url 'GenerateFile' %}" enctype="multipart/form-data" method="POST"
+            NOVALIDATE>
+            <div class="row">
+                <div class="col-sm-8">
+                    <label for="id_textarea">Source File</label>
+                </div>
+                <div style="text-align: right;" class="col-sm-4">
+                    <label style="margin: 0px 0px 12px 0px;" class="upload bg-light text-dark">{{ select.select }}</label>
+                </div>
+            </div>
+            <div class="mt-2">
+                {% csrf_token %}
+                <div class="form-group files">
+                    {{ file.file.label_tag }} <br> {{ file.file }}
+                    <span class="error d-inline-block mt-2">{{ file.file.errors | striptags }}</span>
+                </div>
+                <div class="mt-4">
+                    <input class="btn btn-danger mt-4" type="reset" value="Clear">
+                    <input style="text-align: right;" class="btn btn-primary mt-4" type="submit" value="Generate Cloud">
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock div %}
