@@ -1,0 +1,66 @@
+{% extends 'Utils/index.html' %} {% load static %} {% block css %}
+<link rel="stylesheet" href="{% static 'Image_Comparator/Css/compareImages.css' %}" />
+{% endblock css %} {% block style %}
+<style>
+    .files::before {
+        height: 70px;
+    }
+</style>
+{% endblock style %} {% block div %}
+<h1 class="fw-bolder text-center mt-5 alert alert-info">Images Similarity</h1>
+<form class="container" method="POST" enctype="multipart/form-data" novalidate>
+    {% csrf_token %}
+    <div class="row mt-5">
+        <div class="col-lg-5 col-sm-12">
+            <div class="mb-3">
+                <label for="id_image1" class="form-label fw-bolder">Image 1</label>
+                <div class="form-group files mt-3">
+                    {{ form.image1 }}
+                    <span class="text-danger d-inline-block my-2">{{ form.image1.errors | striptags}}</span>
+                </div>
+            </div>
+            <div class="col-lg-6 col-sm-12 mt-5 text-center">
+                {% if image %}
+                <img height="300px" width="400px" src="{% static 'Image_Comparator/Images/Image1.jpg' %}"
+                    class="card-img" alt="Image 1 will be shown here.." />
+                {% else %}
+                <img src="" class="card-img" alt="Image 1 will be shown here.." />
+                {% endif %}
+                <div class="card-body">
+                    <h5 class="card-title">Image 1</h5>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-5 col-sm-12 mt-lg-0 mt-sm-5 offset-lg-2">
+            <div class="my-sm-5 my-lg-0">
+                <label for="id_image2" class="form-label fw-bolder">Image 2</label>
+                <div class="form-group files mt-3">
+                    {{ form.image2 }}
+                    <span class="text-danger d-inline-block my-2">{{ form.image2.errors | striptags}}</span>
+                </div>
+            </div>
+            <div class="col-lg-6 col-sm-12 align-content-center mt-5 text-center">
+                {% if image %}
+                <img height="300px" width="400px" src="{% static 'Image_Comparator/Images/Image1.jpg' %}"
+                    class="card-img" alt="Image 2 will be shown here.." />
+                {% else %}
+                <img src="" class="card-img" alt="Image 2 will be shown here.." />
+                {% endif %}
+                <div class="card-body">
+                    <h5 class="card-title">Image 2</h5>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="pt-5 text-center">
+        <div>
+            <input type="submit" class="btn btn-outline-danger" value="Find Differences" />
+        </div>
+        <div class="m-5">
+            <textarea class="form-control" cols="10" rows="5"
+                placeholder="Differences will be shown here">{{ getbbox }}</textarea>
+        </div>
+    </div>
+</form>
+{% endblock div %}
