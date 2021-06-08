@@ -1,0 +1,91 @@
+{% extends 'Utils/index.html' %}
+{% load static %}
+
+{% block css %}
+<link rel="stylesheet" href="{% static 'Sentiment_Analysis/Css/sentiment.css' %}" />
+{% endblock css %}
+
+{% block style %}
+<style>
+    #graph {
+        height: 800px;
+        width: 100%;
+        padding: 0px 50px 0px 50px;
+    }
+
+    @media only screen and (max-width : 1000px) {
+        #graph {
+            padding: 0px;
+        }
+
+    }
+
+    .error {
+        margin-left: 6px;
+        color: red;
+        display: block;
+    }
+</style>
+{% endblock style %}
+
+{% block div %}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-12 col-md-12 col-lg-3">
+            <div class="p-4" style="background-color: whitesmoke;">
+                <h2 class="bold">User Inputs</h2>
+                <h4 style="color: green;" class="bold">Single Review Analysis</h4>
+                <form action="{% url 'Sentiment' %}" method="POST" NOVALIDATE>
+                    {% csrf_token %}
+                    {{ sf.text.label_tag }} <br> {{ sf.text }}
+                    <span class="error">{{ sf.text.errors | striptags }}</span>
+                    <input style="font-weight: 800;padding:3px;" class="btn btn-danger" type="reset" value="Clear">
+                    <input style="font-weight: 800;padding:3px;" class="btn btn-primary text-light" type="submit"
+                        value="Analyze">
+                </form>
+                <h4 style="color: green;" class="bold">Multiple Review Analysis</h4>
+                <form action="{% url 'SentimentMultiple' %}" method="POST" enctype="multipart/form-data" NOVALIDATE>
+                    {% csrf_token %}
+                    <div class="form-group files">
+                        {{ mf.file.label_tag }} <br> {{ mf.file }}
+                        <span class="error">{{ mf.file.errors | striptags }}</span>
+                    </div>
+                    <input style="font-weight: 800;padding:3px;" class="btn btn-danger" type="reset" value="Clear">
+                    <input style="font-weight: 800;padding:3px;" class="btn btn-primary text-light" type="submit"
+                        value="Analyze">
+                </form>
+            </div>
+        </div>
+        <div class="col-sm-12 col-md-12 col-lg-9">
+            <div style="margin: 50px 20%;" class="bg-white">
+                <h1 style="font-weight:600;" class="mt-2 alert alert-info text-dark text-center">Sentiment Analysis App
+                    <i class="fas fa-chart-bar"></i>
+                </h1>
+                <p style="font-size: 15px;" class="p-2 text-dark">Sentiment Analysis is the interpretation and
+                    classification of emotions
+                    (Positive, Negative and Neutral) within text data using text analysis techniques. Sentiment analysis
+                    tools allow businesses to identify customer sentiment toward products, brands and services in online
+                    feedback.</p>
+                {% if text == "Positive" %}
+                <h3 style="font-weight:600;">
+                    Great Work There! You Got A Positive Review &#128512;
+                </h3>
+                {% elif text == "Neutral" %}
+                <h3 style="font-weight:600;">
+                    Great Work There, But There's Room For Improvement! You Got A Neutral Review &#128528;
+                </h3>
+                {% elif text == "Negative" %}
+                <h3 style="font-weight:600;">
+                    Try Improving Your Product! You Got A Negative Review &#128532;
+                </h3>
+                {% else %}
+                <h3 style="font-weight:600;">
+                    <i class="fa fa-arrow-circle-left font-weight-bold"></i>
+                    Enter User Input From The Sidebar To see The Nature of The Review.
+                </h3>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock div %}
