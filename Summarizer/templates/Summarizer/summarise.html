@@ -1,0 +1,91 @@
+{% extends 'Utils/index.html' %}
+{% load static %}
+
+{% block css %}
+<link rel="stylesheet" href="{% static 'Summarizer/Css/summarize.css' %}">
+{% endblock css %}
+
+{% block style %}
+<style>
+    #search {
+        margin: 10px 0px;
+        border-top-right-radius: 0%;
+        border-bottom-right-radius: 0%;
+    }
+
+    #search-btn {
+        margin: 10px 0px;
+        border-top-left-radius: 0%;
+        border-bottom-left-radius: 0%;
+    }
+
+    body {
+        background: -webkit-linear-gradient(to right, white, white);
+        background: linear-gradient(to right, white, white);
+    }
+
+    .box:hover {
+        cursor: pointer;
+        border: 2px solid skyblue;
+    }
+    .error{
+        display: block;
+        margin: 20px 0px 0px 20px; 
+        color: red;
+    }
+</style>
+{% endblock style %}
+
+{% block div %}
+<div class="container">
+    <div class="m-5 row">
+        <h1 class="alert alert-danger font-weight-bold text-center">Summarizer</h1>
+        <div class="col-sm-12 col-md-12 col-lg-6">
+            <h2 style="font-size: 40px;font-family: sans-serif;"
+                class="bg-info text-dark p-2 font-weight-bold text-center">Text</h2>
+
+            <div class="p-4">
+                <form action="{% url 'Summarize_Text' %}" method="POST" NOVALIDATE>
+                    {% csrf_token %}
+                    <table>
+                        {{ tf.textarea }} <span class="error"> {{ tf.textarea.errors | striptags }} </span>
+                    </table>
+                    <br>
+                    <input type='reset' value="Clear" class="btn btn-primary"></input>
+                    <input type='submit' value="Summarize" class="btn btn-success"></input>
+                </form>
+            </div>
+        </div>
+        <div class="col-sm-12 col-md-12 col-lg-6">
+            <h2 style="font-size: 40px;font-family: sans-serif;"
+                class="bg-info text-dark p-2 font-weight-bold text-center">Files</h2>
+            <div class="p-4">
+                <form action="{% url 'Summarize_File' %}" method="POST" enctype="multipart/form-data" NOVALIDATE>
+                    {% csrf_token %}
+                    {{ ff.file.label_tag }} <br> {{ ff.file }} <span class="error"> {{ ff.file.errors | striptags }} </span>
+                    <br>
+                    <input type='reset' value="Clear" class="btn btn-primary"></input>
+                    <input type='submit' value="Summarize" class="btn btn-success"></input>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container">
+    <div style="margin-left: 200px;margin-right:200px" class="my-5 row">
+        {% if summary %}
+        <h4 class="text-center alert alert-info">Summary</h4>
+        <div>
+            <textarea style="text-align: justify;" class="form-control box" cols="50" rows="10"
+                id="myInput">{{ summary }}</textarea> <br>
+            <button class="btn btn-primary ml-2" id="copy" onclick="myFunction()" data-bs-toggle="tooltip"
+                data-bs-placement="button" title="Copy to Clipboard">Copy</button>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock div %}
+
+{% block script %}
+<script src="{% static 'Utils/Js/copy.js' %}"></script>
+{% endblock script %}
