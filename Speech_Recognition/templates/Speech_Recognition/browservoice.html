@@ -1,0 +1,26 @@
+{% extends 'Utils/index.html' %}
+{% load static %}
+
+{% block css %}
+<link rel="stylesheet" href="{% static 'Speech_Recognition/Css/speech_recognition.css' %}">
+{% endblock css %}
+
+{% block div %}
+<header>
+    <h1 class="alert alert-primary mt-5">Browser Voices</h1>
+</header>
+<main>
+    <form class="input" id="voice-form" method="POST" NOVALIDATE>
+        {% csrf_token %}
+        <div class="field">
+            <label for="id_text">Type Something</label>
+            {{ form.text }} <span class="text-danger">{{ form.text.errors }}</span>
+        </div>
+        <div class="field">
+            <label for="id_gender">Select Voice</label>
+            {{ form.gender }} <span class="text-danger">{{ form.gender.errors }}</span>
+        </div>
+        <button type="submit" id="button">Say it!</button>
+    </form>
+</main>
+{% endblock div %}

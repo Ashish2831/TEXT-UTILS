@@ -1,0 +1,72 @@
+{% extends 'Utils/index.html' %}
+{% load static %}
+
+{% block css %}
+<link rel="stylesheet" href="{% static 'Speech_Recognition/Css/speech_recognition.css' %}">
+{% endblock css %}
+
+{% block div %}
+<header>
+    <h1 class="alert alert-primary mt-5">Browser Speech Recognition</h1>
+</header>
+<main style="margin-bottom: 250px;" class="mt-5 text-center">
+    <button id="button">Start Recording</button>
+    <div id="result"></div>
+    <p id="message" hidden aria-hidden="true">
+        Your Browser Doesn't Support Speech Recognition. Sorry.
+    </p>
+</main>
+{% endblock div %}
+
+{% block script %}
+<script>
+    window.addEventListener("DOMContentLoaded", () => {
+        const button = document.getElementById("button");
+        const result = document.getElementById("result");
+        const main = document.getElementsByTagName("main")[0];
+        let listening = false;
+        const SpeechRecognition =
+            window.SpeechRecognition || window.webkitSpeechRecognition;
+        if (typeof SpeechRecognition !== "undefined") {
+            const recognition = new SpeechRecognition();
+
+            const stop = () => {
+                main.classList.remove("speaking");
+                recognition.stop();
+                button.textContent = "Start Recording";
+            };
+
+            const start = () => {
+                main.classList.add("speaking");
+                recognition.start();
+                button.textContent = "Stop Recording";
+            };
+
+            const onResult = event => {
+                result.innerHTML = "";
+                for (const res of event.results) {
+                    const text = document.createTextNode(res[0].transcript);
+                    const p = document.createElement("p");
+                    if (res.isFinal) {
+                        p.classList.add("final");
+                    }
+                    p.appendChild(text);
+                    result.appendChild(p);
+                }
+            };
+            recognition.continuous = true;
+            recognition.interimResults = true;
+            recognition.addEventListener("result", onResult);
+            button.addEventListener("click", event => {
+                listening ? stop() : start();
+                listening = !listening;
+            });
+        } else {
+            button.remove();
+            const message = document.getElementById("message");
+            message.removeAttribute("hidden");
+            message.setAttribute("aria-hidden", "false");
+        }
+    });
+</script>
+{% endblock script %}
