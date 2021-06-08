@@ -1,0 +1,60 @@
+{% extends 'Utils/index.html' %}
+{% load static %}
+
+{% block css %}
+<link rel="stylesheet" href="{% static 'Pdf_Merging/Css/pdf_merge.css' %}">
+<link rel="stylesheet" href="https://rawgit.com/enyo/dropzone/master/dist/dropzone.css">
+{% endblock css %}
+
+{% block div %}
+<div class="container">
+    <div class="container mt-5">
+        <div class="jumbotron py-5">
+            <h1><strong>Online PDFs Merging</strong></h1>
+            <p id="pg">Combine Pdfs Online For Free Immediately</p>
+        </div>
+    </div>
+
+    {% if download %}
+    <div class="alert alert-success alert-dismissible fade show mt-5" role="alert">
+        <h4>PDFs Merged Successfully!!</h4>
+        <h4>Now You Can Download Merged File By Clicking On Download Button!!</h4>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    {% endif %}
+
+    <div class="container">
+        <div class="row">
+            <form action="{% url 'Upload' %}" class="dropzone" id="one" method="POST" enctype="multipart/form-data"
+                NOVALIDATE>
+                {% csrf_token %}
+                <div class="fallback">
+                    <input type="file" name="file" id="id_file" multiple>
+                </div>
+            </form>
+            <form action="{% url 'MergePDFs' %}" method="POST">
+                {% csrf_token %}
+                <div class="text-center mb-5">
+                    <button type="submit" id="button" class="btn btn-primary">Merge</button>
+                </div>
+            </form>
+        </div>
+        <div class="text-center mb-4 mt-5">
+            <div class="row d-lg-inline-block">
+                {% if download %}
+                <button class="btn button"><i class="fa fa-download"></i> <a
+                        href="{% static 'Pdf_Merging/MergePDF/MergedFiles.pdf' %}" download>Download</a></button>
+                {% else %}
+                <button class="btn button"><i class="fa fa-download"></i> Download </button>
+                {% endif %}
+                <p id="p1"><strong>CLICK HERE TO DOWNLOAD</strong></p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock div %}
+
+{% block script %}
+<script src="{% static 'Pdf_Merging/Js/pdf_merge.js' %}" defer></script>
+<script src="https://rawgit.com/enyo/dropzone/master/dist/dropzone.js"></script>
+{% endblock script %}
