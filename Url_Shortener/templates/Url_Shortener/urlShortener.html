@@ -1,0 +1,113 @@
+{% extends 'Utils/index.html' %} {% block head %}{% endblock head %}
+{% load static %}
+
+{% block style %}
+<style>
+    #search {
+        margin: 10px 0px;
+        border-top-right-radius: 0%;
+        border-bottom-right-radius: 0%;
+    }
+
+    #search-btn {
+        margin: 10px 0px;
+        border-top-left-radius: 0%;
+        border-bottom-left-radius: 0%;
+    }
+
+    body {
+        background: -webkit-linear-gradient(to right, white, white);
+        background: linear-gradient(to right, white, white);
+    }
+
+    .tooltip {
+        position: relative;
+        display: inline-block;
+    }
+
+    .tooltip .tooltiptext {
+        visibility: hidden;
+        width: 140px;
+        background-color: #555;
+        color: #fff;
+        text-align: center;
+        border-radius: 6px;
+        padding: 5px;
+        position: absolute;
+        z-index: 1;
+        bottom: 150%;
+        left: 50%;
+        margin-left: -75px;
+        opacity: 0;
+        transition: opacity 0.3s;
+    }
+
+    .tooltip .tooltiptext::after {
+        content: "";
+        position: absolute;
+        top: 100%;
+        left: 50%;
+        margin-left: -5px;
+        border-width: 5px;
+        border-style: solid;
+        border-color: #555 transparent transparent transparent;
+    }
+
+    .tooltip:hover .tooltiptext {
+        visibility: visible;
+        opacity: 1;
+    }
+
+    #copy {
+        padding: 5px;
+    }
+
+    span {
+        margin-left: 20px;
+        color: red;
+    }
+</style>
+{% endblock style %}
+
+{% block div %}
+<div class="container bg-light">
+    <div class="row">
+        <div style="width: 50%;margin: 100px 0px;background-color: rgb(243, 241, 241)" class="mx-auto py-5 px-5">
+            <h1 class="font-weight-bold py-2">
+                Link Analytics, Branded Urls, URL Shortener
+            </h1>
+            <p style="line-height: 40px;font-weight: 800" class="py-2">
+                Don't let the links limit you. Make your links support your brand. The
+                new standard of shortening links. A new standard for link analytics.
+                Discover unique redirects analytics - work with your team together
+                building your brand engagement. Manage your links like a pro.
+            </p>
+            <form action="" method="POST" NOVALIDATE>
+                {% csrf_token %}
+                <table>
+                    <div class="row">
+                        <div class="col-sm-8">
+                            {{ uf.url }} <span>{{ uf.url.errors | striptags}}</span>
+                        </div>
+                        <div class="col-sm-4">
+                            <input class="btn btn-primary" type="submit" value="Shorten">
+                        </div>
+                    </div>
+                </table>
+            </form>
+            {% if url %}
+            <h4 class="text-center alert alert-info mt-4">Shortened URL</h4>
+            <div>
+                <textarea style="text-align: justify;" class="form-control box" cols="50" rows="2"
+                    id="myInput">{{ url }}</textarea> <br>
+                <button class="btn btn-primary text-white" id="copy" onclick="myFunction()" data-toggle="tooltip"
+                    data-placement="button" title="Copy to Clipboard">Copy</button>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% block script %}
+<script src="{% static 'Utils/Js/copy.js' %}"></script>
+{% endblock script %}
+{% endblock div %}
