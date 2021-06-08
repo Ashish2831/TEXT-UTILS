@@ -1,0 +1,78 @@
+{% extends 'Utils/index.html' %}
+{% load static %}
+
+{% block css %}
+<link rel="stylesheet" href="{% static 'Utils/Css/contact.css' %}">
+{% endblock css %}
+
+{% block div %}
+<div class="bg-contact100" style="background-image: url({% static 'Utils/Images/bg-01.jpg' %});">
+    <div class="container-contact100 py-5">
+        {% if messages %}
+        {% for message in messages %}
+        <div class="alert alert-success alert-dismissible fade show w-100" id="alert" role="alert">
+            <h4>{{ message }}</h4>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        {% endfor %}
+        {% endif %}
+        <div class="wrap-contact100">
+            <div class="contact100-pic js-tilt" data-tilt>
+                <img src="{% static 'Utils/Images/img-01.png' %}" alt="IMG">
+            </div>
+
+            <form class="contact100-form validate-form" method="POST" NOVALIDATE>
+                {% csrf_token %}
+                <span class="contact100-form-title">
+                    Get In Touch
+                </span>
+
+                <div class="wrap-input100">
+                    {{ form.name }} <span class="text-danger">{{ form.name.errors }}</span>
+                    <span class="focus-input100"></span>
+                    <span class="symbol-input100">
+                        <i class="fa fa-user" aria-hidden="true"></i>
+                    </span>
+                </div>
+
+                <div class="wrap-input100">
+                    {{ form.email }} <span class="text-danger">{{ form.email.errors }}</span>
+                    <span class="focus-input100"></span>
+                    <span class="symbol-input100">
+                        <i class="fa fa-envelope" aria-hidden="true"></i>
+                    </span>
+                </div>
+
+                <div class="wrap-input100">
+                    {{ form.mobile }} <span class="text-danger">{{ form.mobile.errors }}</span>
+                    <span class="focus-input100"></span>
+                    <span class="symbol-input100">
+                        <i class="fa fa-phone" aria-hidden="true"></i>
+                    </span>
+                </div>
+
+                <div class="wrap-input100">
+                    {{ form.message }} <span class="text-danger">{{ form.message.errors }}</span>
+                    <span class="focus-input100"></span>
+                </div>
+
+                <div class="container-contact100-form-btn">
+                    <button class="contact100-form-btn">
+                        Send
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock div %}
+
+{% block script %}
+<script src="{% static 'Utils/Vendor/tilt/tilt.jquery.min.js' %}"></script>
+<script>
+    $('.js-tilt').tilt({
+        scale: 1.1
+    })
+</script>
+<script src="{% static 'Utils/Js/main.js' %}"></script>
+{% endblock script %}

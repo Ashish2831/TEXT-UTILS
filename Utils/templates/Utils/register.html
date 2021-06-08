@@ -1,0 +1,84 @@
+{% extends 'Utils/index.html' %}
+{% load static %}
+
+{% block css %}
+<link rel="stylesheet" href="{% static 'Utils/Css/register.css' %}">
+{% endblock css %}
+
+{% block style %}
+<style>
+    .error {
+        color: red;
+        display: inline-block;
+        margin: 5px;
+    }
+</style>
+{% endblock style %}
+
+{% block div %}
+{% if messages %}
+{% for message in messages %}
+{% if message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
+<div class="alert alert-success alert-dismissible fade show mt-2" role="alert">
+    <h4>{{ message }}</h4>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+{% endif %}
+{% endfor %}
+{% endif %}
+<div class="register my-5">
+    <div class="row">
+        <div class="col-md-3 register-left">
+            <img src="https://image.ibb.co/n7oTvU/logo_white.png" alt="" />
+            <h3>Welcome</h3>
+            <p>You Are 30 Seconds Away To Dive In To Amazing Features!</p>
+            <a href="{% url 'Login' %}">Login</a><br />
+        </div>
+        <div class="col-md-9 register-right">
+            <div class="tab-content" id="myTabContent">
+                <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                    <h3 class="register-heading">Registration</h3>
+                    <form method="POST" NOVALIDATE class="row register-form">
+                        {% csrf_token %}
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                {{register.username }} <span class="error">{{ register.username.errors | striptags }}</span>
+                                <span class="text-success d-inline-block m-1">{{ register.username.help_text }}</span>
+                            </div>
+                            <div class="form-group">
+                                {{register.first_name }} <span class="error">{{ register.first_name.errors | striptags }}</span>
+                            </div>
+                            <div class="form-group">
+                                {{register.password1 }} <span class="error">{{ register.password1.errors | striptags }}</span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                {{register.email }} <span class="error">{{ register.email.errors | striptags }}</span>
+                            </div>
+                            <div class="form-group">
+                                {{register.last_name }} <span class="error">{{ register.last_name.errors | striptags }}</span>
+                            </div>
+                            <div class="form-group">
+                                {{register.password2 }} <span class="error">{{ register.password2.errors | striptags }}</span>
+                            </div>
+                            <input type="submit" class="btnRegister" value="Register" />
+                            <input type="reset" class="btnRegister bg-danger" value="Clear" />
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock div %}
+
+{% block script %}
+{% if success %}
+<script>
+    setTimeout(() => {
+        window.location.href = '/login/'
+    }, 5000)
+</script>
+{% endif %}
+{% endblock script %}

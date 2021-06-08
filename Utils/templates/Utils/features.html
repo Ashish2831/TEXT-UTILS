@@ -1,0 +1,46 @@
+{% extends 'Utils/index.html' %}
+{% load static %}
+
+{% block style %}
+<style>
+    img {
+        border-radius: 20px;
+    }
+
+    .card {
+        height: 500px;
+    }
+
+    .card-text {
+        height: 100px;
+    }
+
+    .col-lg-4 {
+        padding: 20px 50px 20px 50px;
+    }
+</style>
+{% endblock style %}
+
+{% block div %}
+<div class="container mt-4">
+    <div class="row mb-2">
+        {% for feature in features %}
+        <div class="col-lg-4 col-md-6 col-sm-12">
+            <div class="card">
+                <img class="card-img-top" width="250" height="250" src="{{ feature.image.url }}"
+                    alt="{{ feature.alt }}" />
+                <div class="card-body">
+                    <h5 class="card-title">{{ feature.title }}</h5>
+                    <p class="card-text">{{ feature.text }}</p>
+                </div>
+                <div class="card-body">
+                    {% with url=feature.url %}
+                    <a href="{% url feature.url %}" class="stretched-link btn btn-primary">Select</a>
+                    {% endwith %}
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock div %}

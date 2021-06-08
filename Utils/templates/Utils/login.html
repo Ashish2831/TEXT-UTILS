@@ -1,0 +1,115 @@
+{% extends 'Utils/index.html' %}
+{% load static %}
+
+{% block css %}
+<link rel="stylesheet" href="{% static 'Utils/Css/register.css' %}">
+{% endblock css %}
+
+{% block style %}
+<style>
+    .error {
+        color: red;
+        display: inline-block;
+        margin: 5px;
+    }
+
+    .box input {
+        width: 50%;
+    }
+
+    .btnn {
+        width: 55%;
+        padding: 1%;
+    }
+
+    @media only screen and (min-width: 800px) {
+        .btnn {
+            width: 35%;
+        }
+
+        .msg {
+            padding-left: 80px;
+        }
+    }
+</style>
+{% endblock style %}
+
+{% block div %}
+{% if messages %}
+{% for message in messages %}
+{% if message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
+<div class="alert alert-success alert-dismissible fade show mt-2" role="alert">
+    <h4>{{ message }}</h4>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+{% else %}
+<div class="alert alert-danger alert-dismissible fade show mt-2" role="alert">
+    <h4>{{ message }}<strong> Please Login!</strong></h4>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+{% endif %}
+{% endfor %}
+{% endif %}
+{% if error %}
+<div class="alert alert-danger alert-dismissible fade show mt-2" role="alert">
+    <h4>{{ form.email.errors | striptags }}</h4>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+{% endif %}
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <form action="{% url 'Reset' %}" method="POST" class="modal-content" NOVALIDATE>
+            {% csrf_token %}
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Forgot Password</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                {{ form.email }}
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-primary">Reset</button>
+            </div>
+        </form>
+    </div>
+</div>
+<div class="register my-5">
+    <div class="row">
+        <div class="col-md-3 register-left">
+            <img src="https://image.ibb.co/n7oTvU/logo_white.png" alt="" />
+            <h3>Welcome</h3>
+            <p>You Are 30 Seconds Away To Dive In To Amazing Features!</p>
+            <a class="d-inline-block mb-2" href="{% url 'Register' %}">Register</a><br />
+        </div>
+        <div class="col-md-9 register-right">
+            <div class="tab-content" id="myTabContent">
+                <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                    <h3 class="register-heading">Login</h3>
+                    <form action="{% url 'Login' %}" method="POST" NOVALIDATE class="row register-form">
+                        {% csrf_token %}
+                        {% if login.non_field_errors %}
+                        <span class="error msg">Please Enter A Correct Username And Password. Note That Both Fields May
+                            Be Case-Sensitive.</span>
+                        {% endif %}
+                        <div class="col-md-8 offset-md-2">
+                            <div class="form-group">
+                                {{ login.username }} <span class="error">{{ login.username.errors | striptags }}</span>
+                            </div>
+                            <div class="form-group">
+                                {{ login.password }} <span class="error">{{ login.password.errors | striptags }}</span>
+                            </div>
+                        </div>
+                        <div class="box" style="width: 64%;">
+                            <input type="submit" class="btnRegister" value="Login" />
+                        </div>
+                        <button type="button" class="btnRegister bg-danger btnn" data-bs-toggle="modal"
+                            data-bs-target="#exampleModal">
+                            Forgot Password
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock div %}
