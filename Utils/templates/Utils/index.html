@@ -52,19 +52,13 @@
             left: -84px;
         }
 
-            {
-            % if not Features %
-        }
-
-        @media only screen and (max-width:800px) {
-            #dashboard {
-                left: -2px;
+        {% if not Features %}
+            @media only screen and (max-width:800px) {
+                #dashboard {
+                    left: -2px;
+                }
             }
-        }
-
-            {
-            % endif %
-        }
+        {% endif %}
     </style>
     {% block style %}{% endblock style %}
 </head>
@@ -122,13 +116,10 @@
                             </div>
                             {% endif %}
                         </ul>
-                        <form class="d-flex" action="{% url 'Search' %}" method="POST" NOVALIDATE>
+                        <form class="d-flex" NOVALIDATE>
                             {% if Features %}
                             {% csrf_token %}
-                            {{ Search.search }}
-                            <button id=search-btn class="btn btn-primary border-0" type="submit">
-                                <i style="color: white;" class="fas fa-search"></i>
-                            </button>
+                            <input style="margin: 8px 0px 8px 0px;" id="search" type="text" class="form-control" aria-label="Search" placeholder="Search">
                             {% endif %}
                             {% if request.user.is_authenticated %}
                             <div class="btn-group dropdown my-2 mx-3">

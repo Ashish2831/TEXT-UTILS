@@ -252,6 +252,3 @@ class Contact_Form(forms.ModelForm):
         if len(inp_message) == 0:
             raise ValidationError(_("Message is required!!"))
         return inp_message
-
-class Search_Form(forms.Form):
-    search = forms.CharField(widget=forms.TextInput(attrs={'class' : 'form-control', 'placeholder' : 'Search', 'aria-label' : 'Search'}))

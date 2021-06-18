@@ -44,3 +44,22 @@
     </div>
 </div>
 {% endblock div %}
+
+{% block script %}
+<script>
+    const search = document.querySelector('#search');
+    console.log(search.value);
+    search.addEventListener('input', () => {
+        const cards = document.getElementsByClassName('card');
+        Array.from(cards).forEach(element => {
+            const cardTitle = element.querySelector('.card-title');
+            if (cardTitle.innerText.includes(search.value)) {
+                element.style.display = 'block';
+            }
+            else {
+                element.style.display = 'none';
+            }
+        })
+    });
+</script>
+{% endblock script %}

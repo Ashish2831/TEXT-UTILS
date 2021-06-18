@@ -115,8 +115,7 @@ def Features(request):
         messages.error(request, "The Page You Are Trying To Visit is Login Protected.")
         return HttpResponseRedirect('/login/')
     features = Feature.objects.all()
-    Search = Search_Form()
-    return render(request, 'Utils/features.html', {'Features' : 'danger', 'features' : features, 'Search' : Search})
+    return render(request, 'Utils/features.html', {'Features' : 'danger', 'features' : features})
 
 def Dashboard(request, id):
     if not request.user.is_authenticated:
@@ -202,13 +201,3 @@ def Remove_Profile_Picure(request, id):
     user_profile.save()
     messages.success(request, "Profile Picture Updated Successfully")
     return HttpResponseRedirect(f"/dashboard/{id}")
-
-def Search(request):
-    if request.method == "POST":
-        search = Search_Form(request.POST)
-        if search.is_valid():
-            data = search.cleaned_data.get('search')
-            features = Feature.objects.filter(text__icontains=data)
-            return render(request, 'Utils/features.html', {'Features' : 'danger', 'features' : features, 'Search' : search})
-    return HttpResponseRedirect('/features/')
-
