@@ -50,6 +50,13 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sites',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+
+    # Providers
+    'allauth.socialaccount.providers.google'
 ]
 
 MIDDLEWARE = [
@@ -144,3 +151,7 @@ CACHES = {
 
 CACHE_MIDDLEWARE_SECONDS = 60*60*24
 DEFAULT_AUTO_FIELD = 'django.db.models.AutoField' 
+
+SITE_ID = 1
+
+LOGIN_REDIRECT_URL = '/google/'

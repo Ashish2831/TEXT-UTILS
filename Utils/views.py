@@ -117,6 +117,15 @@ def Features(request):
     features = Feature.objects.all()
     return render(request, 'Utils/features.html', {'Features' : 'danger', 'features' : features})
 
+def Google(request):
+    user_profile = UserProfile()
+    latest = User.objects.latest('id')
+    user_profile.user_id = latest
+    user_profile.save()
+    user_group = Group.objects.get(name='Users')
+    request.user.groups.add(user_group)
+    return HttpResponseRedirect(f'/dashboard/{latest.id}/')
+
 def Dashboard(request, id):
     if not request.user.is_authenticated:
         messages.error(request, "The Page You Are Trying To Visit is Login Protected.")

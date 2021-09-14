@@ -1,5 +1,7 @@
 {% extends 'Utils/index.html' %}
 {% load static %}
+{% load socialaccount %}
+{% providers_media_js %}
 
 {% block css %}
 <link rel="stylesheet" href="{% static 'Utils/Css/register.css' %}">
@@ -33,6 +35,7 @@
             <h3>Welcome</h3>
             <p>You Are 30 Seconds Away To Dive In To Amazing Features!</p>
             <a href="{% url 'Login' %}">Login</a><br />
+            <a class="mt-5 d-lg-inline-block" href="{% provider_login_url 'google' %}">Login With Google</a><br />
         </div>
         <div class="col-md-9 register-right">
             <div class="tab-content" id="myTabContent">

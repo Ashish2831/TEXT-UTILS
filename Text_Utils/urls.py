@@ -21,6 +21,7 @@ from . import settings
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('Utils.urls')),
+    path('accounts/', include('allauth.urls')),
     path('features/summarizer/', include('Summarizer.urls')),
     path('features/profanityfilter/', include('Profanity_Filter.urls')),
     path('features/urlshortener/', include('Url_Shortener.urls')),

@@ -15,4 +15,5 @@ urlpatterns = [
     path('password_change/', views.Password_Change, name="Password_Change"),
     path('password_reset/', views.PasswordReset, name="Reset"),
     path('reset_done/', views.ResetDone, name="ResetDone"),
+    path('google/', views.Google, name="Google"),
 ]
